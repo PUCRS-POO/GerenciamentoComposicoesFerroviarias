@@ -41,7 +41,7 @@ public class Composicao {
 
 	public boolean engataLocomotiva(Locomotiva locomotiva) {
 		// TO DO: escrever o código que permite engatar uma locomotiva
-		if(getQtdadeVagoes == 0 && locomotiva.getComposicao() == -1) {
+		if(this.getQtdadeVagoes() == 0 && locomotiva.getComposicao() == -1) {
 			locomotivas.add(locomotiva);
 			locomotiva.setComposicao(this);
 			return true;
@@ -51,41 +51,59 @@ public class Composicao {
 
 	public boolean engataVagao(Vagao vagao) {
 		// TO DO: escrever o código que permite engatar um vagao
-		if(getQtdadeLocomotivas > 0) {
+		if(this.getQtdadeLocomotivas() > 0) {
 			int numeroTotalVagoes = 0;
 			for(int i = 0; i < this.getQtdadeLocomotivas(); i++) {
 				numeroTotalVagoes += (this.getLocomotiva(i).getQtdadeMaxVagoes());
 			}
-			if(this.getQtdadeLocomotivas > 1) {
+
+			// numero total de vagoes diminui 10% se a composicao possuir mais de 1 locomotiva
+			if(this.getQtdadeLocomotivas() > 1) {
 				numeroTotalVagoes -= (numeroTotalVagoes*0.1);
 			}
 
+			// peso maximo que a composicao suporta
 			double maxPeso = 0;
 			for(int i = 0; i < this.getQtdadeLocomotivas(); i++) {
 				maxPeso += this.getLocomotiva(i).getPesoMaximo();
 			}
 
+			// peso atual da composicao
 			double pesoAtual = 0;
 			for(Vagao v : vagoes) {
 				pesoAtual += v.getCapacidadeCarga();
 			}
 
-			if(this.getQtdadeVagoes() < numeroTotalVagoes && (maxPeso+vagoes.getCapacidadeCarga()) <= pesoAtual) {
+			if((this.getQtdadeVagoes() < numeroTotalVagoes) && (pesoAtual + vagao.getCapacidadeCarga()) <= maxPeso) {
 				vagoes.add(vagao);	
-				vagao.setComposicao(this);	
+				vagao.setComposicao(this);
+				return true;
+			} else {
+				return false;
 			}
 		}
-		return true;
+		return false;
 	}
 
 	public boolean desengataLocomotiva() {
-		// TO DO: escrever o código que permite desengatar uma locomotiva
-		return true;
+		if(this.getQtdadeLocomotivas() > 0 && this.getQtdadeVagoes() == 0) {
+			Locomotiva l = locomotivas.remove(locomotivas.size()-1);
+			l.setComposicao(null);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public boolean desengataVagao() {
-		// TO DO: escrever o código que permite desengatar um vagao
-		return true;
+		if(this.getQtdadeVagoes() > 0) {
+			Vagao v = vagoes.remove(vagoes.size()-1);
+			v.setComposicao(null);
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 
 	public String toLineFile(){

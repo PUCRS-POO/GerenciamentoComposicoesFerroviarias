@@ -64,15 +64,15 @@ public class CadastroVagoes {
         String currDir = Paths.get("").toAbsolutePath().toString();
         String nameComplete = currDir+"\\"+fName;
         Path path = Paths.get(nameComplete);
-        try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(path, StandardCharsets.UTF_8))){
-          for(Vagao vagao:vagoes){
+        try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(path, StandardCharsets.UTF_8))) {
+          for(Vagao vagao : vagoes) {
 				String linha = vagao.getIdentificador()+","+
 					vagao.getCapacidadeCarga()+","+
 					vagao.getComposicao();
                 writer.println(linha);
             }
-        }catch (IOException x){
+        } catch (IOException x) {
           System.err.format("Erro de E/S: %s%n", x);
-      }
+		}
 	}
 }
